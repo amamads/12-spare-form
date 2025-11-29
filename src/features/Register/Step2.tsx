@@ -19,6 +19,7 @@ const schema = z.object({
     .nullable()
 })
 export type FormFieldesStep2 = z.infer<typeof schema>;
+
 // export type FormFieldesStep2 = { name: string };
 
 export const Step2 = () => {
