@@ -1,14 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { FormFieldes } from ".";
 import type { RootState } from "@/app/store";
+import type { FormFieldesStep1 } from "./Step1";
+import type { FormFieldesStep2 } from "./Step2";
 type Step = { step: number }
-type FormType = FormFieldes & Step
+type FormType = Step & FormFieldesStep1 & FormFieldesStep2
 
 const initialState: FormType = {
     name: null,
     phoneNumber: null,
     email: null,
-    step: 1,
+    step: 2,
 };
 
 const formSlice = createSlice({
