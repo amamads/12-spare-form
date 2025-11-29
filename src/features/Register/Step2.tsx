@@ -4,8 +4,6 @@ import { Input } from "@/components/ui/input";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { isMobilePhone } from "validator";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { selectName, selectPhoneNumber, selectStep, setName, setPhoneNumber, setStep } from "./formSlice";
 import { Card, CardContent } from "@/components/ui/card";
