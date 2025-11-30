@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isMobilePhone } from "validator";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { selectName, selectPhoneNumber, selectStep, setName, setPhoneNumber, setStep } from "./formSlice";
+import { selectName, selectPhoneNumber, selectStep, setName, setPhoneNumber, setStep, setStep1Values } from "./formSlice";
 
 
 const schema = z.object({
@@ -40,18 +40,20 @@ export const Step1 = () => {
     })
     const { control, formState: { errors, isSubmitting } } = form
 
-    useEffect(() => {
-        dispatch(setName('امیرمحمد صادقی'))
-        dispatch(setPhoneNumber('09204670120'))
-    }, [])
+    // useEffect(() => {
+    //     dispatch(setName('امیرمحمد صادقی'))
+    //     dispatch(setPhoneNumber('09204670120'))
+    // }, [])
 
     // function fromOnSubmit(data: SubmitHandler<FormFieldesStep1>) {
     function fromOnSubmit(data: FormFieldesStep1) {
-        dispatch(setName(data.name))
-        dispatch(setPhoneNumber(data.phoneNumber))
+        dispatch(setStep1Values({ name: data.name, phoneNumber: data.phoneNumber }))
+
         dispatch(setStep(2))
     }
     // console.log(step);
+    // console.log(useAppSelector(s => s.form));
+
     return (
 
         <Form {...form}>
