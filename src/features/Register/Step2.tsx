@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { selectName, selectPhoneNumber, selectStep, setCountie, setEmail, setName, setPhoneNumber, setProvince, setStep, setStep2Values } from "./formSlice";
+import { selectName, selectPhoneNumber, setStep, setStep2Values } from "./formSlice";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import counties from '@/data/counties.json'
@@ -40,7 +40,6 @@ const schema = z.object({
 export type FormFieldesStep2 = z.infer<typeof schema>;
 
 const isValidNationalCode = (code: string) => {
-  // const code = String(_code);
   if (code.length !== 10 || /(\d)(\1){9}/.test(code)) return false;
 
   let sum = 0,
@@ -59,15 +58,14 @@ const isValidNationalCode = (code: string) => {
 export const Step2 = () => {
   const dispatch = useAppDispatch();
 
-  const step = useAppSelector(selectStep)
   const name = useAppSelector(selectName)
   const phoneNumber = useAppSelector(selectPhoneNumber)
 
   const form = useForm<FormFieldesStep2>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: 'demo@text.as',
-      nationalCode: '0060647531',
+      // email: 'demo@text.as',
+      // nationalCode: '0060647531',
       // province: {
       //   "id": 119,
       //   "name": "زنجان",
@@ -88,7 +86,6 @@ export const Step2 = () => {
 
   // function fromOnSubmit(data: SubmitHandler<FormFieldesStep2>) {
   function fromOnSubmit(data: FormFieldesStep2) {
-    // console.log(data);
     dispatch(setStep2Values({
       email: data.email,
       nationalCode: data.nationalCode,
@@ -98,7 +95,6 @@ export const Step2 = () => {
     }))
     dispatch(setStep(3))
   }
-  // console.log(useAppSelector(s => s.form));
 
   return (
 
@@ -240,6 +236,3 @@ export const Step2 = () => {
     </Form >
   );
 };
-
-
-// ES6 version

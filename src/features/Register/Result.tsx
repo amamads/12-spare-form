@@ -1,6 +1,5 @@
 import { useAppSelector } from '@/app/hooks'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import React, { useEffect, useState } from 'react'
 import { selectAddress, selectAvatar, selectCountie, selectEmail, selectName, selectNationalCode, selectPhoneNumber, selectProvince } from './formSlice'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'

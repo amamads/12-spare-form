@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { file, refine, z } from 'zod'
+import { useForm } from "react-hook-form";
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { isMobilePhone } from "validator";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { selectName, selectPhoneNumber, selectStep, setName, setPhoneNumber, setStep, setStep1Values, setStep3Values } from "./formSlice";
-import ams from '../../../public/amamads.png'
+import { useAppDispatch } from "@/app/hooks";
+import { setStep, setStep3Values } from "./formSlice";
 
 const MAX_FILE_SIZE = (1024 ** 2) * 3,
   MAX_WIDTH = 1024,
@@ -39,10 +36,6 @@ export type FormFieldesStep3 = z.infer<typeof schema>;
 export const Step3 = () => {
   const dispatch = useAppDispatch();
 
-  const step = useAppSelector(selectStep)
-  const name = useAppSelector(selectName)
-  const phoneNumber = useAppSelector(selectPhoneNumber)
-
   const form = useForm<FormFieldesStep3>({
     resolver: zodResolver(schema),
     defaultValues: {}
@@ -52,7 +45,6 @@ export const Step3 = () => {
 
   // function fromOnSubmit(data: SubmitHandler<FormFieldesStep3>) {
   function fromOnSubmit(data: FormFieldesStep3) {
-    // console.log(data.avatar?.[0]);
     dispatch(setStep3Values({
       avatar: {
         name: data.avatar?.[0].name,
@@ -63,10 +55,7 @@ export const Step3 = () => {
     }))
     dispatch(setStep(4))
   }
-  // console.log(useAppSelector(s => s.form.avatar));
-
   return (
-
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(fromOnSubmit)}

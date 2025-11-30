@@ -1,6 +1,5 @@
 import { useAppSelector } from '@/app/hooks'
 import { Card } from '@/components/ui/card'
-import React from 'react'
 import { selectStep } from './formSlice'
 import { Step1 } from './Step1'
 import { Step3 } from './Step3'
