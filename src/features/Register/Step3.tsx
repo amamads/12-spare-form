@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppDispatch } from "@/app/hooks";
 import { setStep, setStep3Values } from "./formSlice";
+import { da } from "zod/v4/locales";
 
 const MAX_FILE_SIZE = (1024 ** 2) * 3,
   MAX_WIDTH = 1024,
@@ -38,7 +39,6 @@ export const Step3 = () => {
 
   const form = useForm<FormFieldesStep3>({
     resolver: zodResolver(schema),
-    defaultValues: {}
   })
   const { control, formState: { errors, isSubmitting } } = form
 

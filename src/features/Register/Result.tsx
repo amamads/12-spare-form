@@ -1,18 +1,24 @@
-import { useAppSelector } from '@/app/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { selectAddress, selectAvatar, selectCountie, selectEmail, selectName, selectNationalCode, selectPhoneNumber, selectProvince } from './formSlice'
+import { selectAddress, selectAvatar, selectCountie, selectEmail, selectForm, selectFormValues, selectName, selectNationalCode, selectPhoneNumber, selectProvince, setStep } from './formSlice'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { Button } from '@/components/ui/button'
 
 export const Result = () => {
-    const Name = useAppSelector(selectName)
-    const PhoneNumber = useAppSelector(selectPhoneNumber)
-    const Email = useAppSelector(selectEmail)
-    const NationalCode = useAppSelector(selectNationalCode)
-    const address = useAppSelector(selectAddress)
-    const Province = useAppSelector(selectProvince)
-    const Countie = useAppSelector(selectCountie)
-    const avatar = useAppSelector(selectAvatar)
+    const dispatch = useAppDispatch();
+
+    const {
+        name,
+        phoneNumber,
+        email,
+        nationalCode,
+        address,
+        province,
+        countie,
+        avatar
+    } = useAppSelector(selectForm);
+
 
     return (
         <>
@@ -28,15 +34,21 @@ export const Result = () => {
                 </CardTitle>
                 <Separator />
                 <CardContent className='space-y-5'>
-                    <p>اسم: {Name}</p>
-                    <p>شماره همراه: {PhoneNumber}</p>
-                    <p>ایمیل: {Email}</p>
-                    <p>کد ملی: {NationalCode}</p>
+                    <p>اسم: {name}</p>
+                    <p>شماره همراه: {phoneNumber}</p>
+                    <p>ایمیل: {email}</p>
+                    <p>کد ملی: {nationalCode}</p>
                     <p>آدرس: {address}</p>
-                    <p>استان: {Province?.name}</p>
-                    <p>شهرستان: {Countie?.name}</p>
+                    <p>استان: {province?.name}</p>
+                    <p>شهرستان: {countie?.name}</p>
                 </CardContent>
             </Card>
+            <Button
+                onClick={() => dispatch(setStep(3))}
+                className="text-lg flex-1"
+            >
+                ویرایش
+            </Button>
         </>
     )
 }

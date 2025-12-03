@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { selectName, selectPhoneNumber, setStep, setStep2Values } from "./formSlice";
+import { getDefaultValue, selectForm, setStep, setStep2Values } from "./formSlice";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import counties from '@/data/counties.json'
@@ -58,31 +58,31 @@ const isValidNationalCode = (code: string) => {
 export const Step2 = () => {
   const dispatch = useAppDispatch();
 
-  const name = useAppSelector(selectName)
-  const phoneNumber = useAppSelector(selectPhoneNumber)
+  const { name, phoneNumber, countie, province } = useAppSelector(selectForm);
 
+  const defaultValues = getDefaultValue(['email', 'nationalCode', 'address', 'province', 'countie'])
   const form = useForm<FormFieldesStep2>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      // email: 'demo@text.as',
-      // nationalCode: '0060647531',
-      // province: {
-      //   "id": 119,
-      //   "name": "زنجان",
-      //   "slug": "زنجان",
-      //   "tel_prefix": "024"
-      // },
-      // countie: {
-      //   "id": 1190001,
-      //   "name": "ابهر",
-      //   "slug": "ابهر",
-      //   "province_id": 119
-      // },
-
-
-    }
+    defaultValues
+    // defaultValues: {
+    // email: 'demo@text.as',
+    // nationalCode: '0060647531',
+    // province: {
+    //   "id": 119,
+    //   "name": "زنجان",
+    //   "slug": "زنجان",
+    //   "tel_prefix": "024"
+    // },
+    // countie: {
+    //   "id": 1190001,
+    //   "name": "ابهر",
+    //   "slug": "ابهر",
+    //   "province_id": 119
+    // },
+    // }
   })
   const { control, formState: { errors, isSubmitting } } = form
+  const selectedProvice = form.watch('province');
 
   // function fromOnSubmit(data: SubmitHandler<FormFieldesStep2>) {
   function fromOnSubmit(data: FormFieldesStep2) {
@@ -156,7 +156,7 @@ export const Step2 = () => {
         <div className="flex">
           <FormField
             control={control}
-            name="countie"
+            name="province"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>استان</FormLabel>
@@ -166,6 +166,7 @@ export const Step2 = () => {
                       const provinceObj = provinces.filter(province => province.id === Number(e))[0];
                       form.setValue('province', provinceObj)
                     }}
+                    value={field.value ? String(field.value.id) : ''}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='استان خودرا انتخاب کنید' />
@@ -186,7 +187,7 @@ export const Step2 = () => {
 
           <FormField
             control={control}
-            name="province"
+            name="countie"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>شهرستان</FormLabel>
@@ -196,7 +197,9 @@ export const Step2 = () => {
                       const countieObj = counties.filter(countie => countie.id === Number(e))[0];
                       form.setValue('countie', countieObj)
                     }}
-                    disabled={!form.getValues('province.id')}
+                    value={field.value ? String(field.value.id) : ''}
+                    // value={String(field.value?.id) ?? ''}
+                    disabled={!selectedProvice}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='شهرستان خودرا انتخاب کنید' />

@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { isMobilePhone } from "validator";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setStep, setStep1Values } from "./formSlice";
+import { useAppDispatch } from "@/app/hooks";
+import { getDefaultValue, setStep, setStep1Values } from "./formSlice";
 
 
 const schema = z.object({
@@ -25,12 +25,15 @@ export type FormFieldesStep1 = z.infer<typeof schema>;
 export const Step1 = () => {
     const dispatch = useAppDispatch();
 
+    const defaultValues = getDefaultValue(['name', 'phoneNumber'])
+
     const form = useForm<FormFieldesStep1>({
         resolver: zodResolver(schema),
-        defaultValues: {
-            // name: 'امیرمحمد صادقی',
-            // phoneNumber: '09204670120',
-        }
+        defaultValues
+        // defaultValues: {
+        //     name: name ?? undefined,
+        //     phoneNumber: phoneNumber ?? undefined
+        // }
     })
     const { control, formState: { errors, isSubmitting } } = form
 

@@ -4,6 +4,7 @@ import type { FormFieldesStep1 } from "./Step1";
 import type { FormFieldesStep2 } from "./Step2";
 import { nativeEnum } from "zod/v3";
 import type { FormFieldesStep3 } from "./Step3";
+import { useAppSelector } from "@/app/hooks";
 type Step = { step: number }
 type FormType = Step & FormFieldesStep1 & FormFieldesStep2 & FormFieldesStep3
 
@@ -41,6 +42,7 @@ const initialState: FormType = {
     avatar: null,
     step: 1,
 };
+
 
 const formSlice = createSlice({
     name: 'formSlice',
@@ -92,6 +94,7 @@ const formSlice = createSlice({
         setStep(state, action) {
             state.step = action.payload
         },
+
     },
 });
 
@@ -116,5 +119,27 @@ export const selectProvince = (state: RootState) => state.form.province;
 export const selectCountie = (state: RootState) => state.form.countie;
 export const selectAvatar = (state: RootState) => state.form.avatar;
 export const selectStep = (state: RootState) => state.form.step;
+export const selectForm = (state: RootState) => state.form;
+
+export function selectFormValues(state: RootState, values: (keyof FormType)[]) {
+    const returnedObject: Partial<FormType> = {};
+    values.forEach(key => returnedObject[key] = state.form[key]);
+    return returnedObject;
+}
+
+export function getDefaultValue(values: (keyof FormType)[]) {
+    const formValues = useAppSelector(s => selectFormValues(s, values));
+
+    // const returnedObject: Partial<FormType> = {};
+    // values.forEach(key => returnedObject[key] = formValues[key]);
+    // const values = selectFormValues(values);
+
+    return (Object.keys(formValues) as (keyof FormType)[])
+        .reduce((total, key) => {
+            total[key] = formValues[key] ?? null;
+            return total;
+        }, {} as Partial<FormType>);
+}
+
 
 export default formSlice.reducer
